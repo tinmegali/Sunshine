@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ListPreference
+        android:key="pref_unit"
+        android:title="@string/pref_unit_type"
+        android:entries="@array/pref_unit_type_entries"
+        android:entryValues="@array/pref_unit_type_entry_values"
+        android:defaultValue="metric"
+        />
+
+    <CheckBoxPreference
+        android:key="pref_use_gps"
+        android:title="Utilizar GPS"
+        android:defaultValue="true"
+    />
+
+    <EditTextPreference
+        android:key="pref_localization"
+        android:title="@string/pref_localization_label"
+        android:defaultValue="29090590"
+    />
+
+</PreferenceScreen>
