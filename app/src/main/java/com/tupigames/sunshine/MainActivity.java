@@ -64,8 +64,6 @@ public class MainActivity extends ActionBarActivity
                     .commit();
         }
 
-        //TODO remover Log
-        Log.v("LifeCycle", "onCreate");
 
     }
 
@@ -78,8 +76,7 @@ public class MainActivity extends ActionBarActivity
             mGoogleApiClient.connect();
         }
 
-        //TODO remover Log
-        Log.v("LifeCycle", "onStart");
+
 
     }
 
@@ -89,36 +86,10 @@ public class MainActivity extends ActionBarActivity
         mGoogleApiClient.disconnect();
         super.onStop();
 
-        //TODO remover Log
-        Log.v("LifeCycle", "onStop");
+
     }
 
-    @Override
-    protected  void onResume()
-    {
-        super.onResume();
-
-        //TODO remover Log
-        Log.v("LifeCycle", "onResume");
-    }
-
-    @Override
-    protected void onDestroy()
-    {
-        super.onDestroy();
-
-        //TODO remover Log
-        Log.v("LifeCycle", "onDestroy");
-    }
-
-    @Override
-    protected void onPause()
-    {
-        super.onPause();
-
-        //TODO remover Log
-        Log.v("LifeCycle", "onPause");
-    }
+   
 
     protected synchronized void buildGoogleApiClient()
     {
