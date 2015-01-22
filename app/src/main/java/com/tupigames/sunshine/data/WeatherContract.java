@@ -95,7 +95,8 @@ public class WeatherContract {
          * https://www.udacity.com/course/viewer#!/c-ud853/l-1639338560/e-1633698595/m-1633698597
          **/
 
-
+        public static final String TABLE_NAME       = "location";
+        public static final String COLUMN_CITY      = "city";
 
         public static final Uri CONTENT_URI =
                 BASE_CONTENT_URI.buildUpon().appendPath(PATH_LOCATION).build();
