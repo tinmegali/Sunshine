@@ -49,8 +49,8 @@ public class WeatherDbHelper extends SQLiteOpenHelper {
                 LocationEntry.COLUMN_CITY_NAME + " TEXT UNIQUE NOT NULL," +
                 LocationEntry.COLUMN_LOCATION_SETTING + " TEXT NOT NULL," +
                 LocationEntry.COLUMN_COORD_LAT + " REAL NOT NULL," +
-                LocationEntry.COLUMN_COORD_LONG + " REAL NOT NULL" +
-                "UNIQUE (" + LocationEntry.COLUMN_LOCATION_SETTING + ") ON CONFLICT IGNORE" +
+                LocationEntry.COLUMN_COORD_LONG + " REAL NOT NULL, " +
+                " UNIQUE (" + LocationEntry.COLUMN_LOCATION_SETTING + ") ON CONFLICT IGNORE" +
                 ");";
 
         final String SQL_CREATE_WEATHER_TABLE = "CREATE TABLE " + WeatherEntry.TABLE_NAME + " (" +
