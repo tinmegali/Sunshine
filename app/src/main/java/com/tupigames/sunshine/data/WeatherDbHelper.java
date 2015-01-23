@@ -44,7 +44,14 @@ public class WeatherDbHelper extends SQLiteOpenHelper {
          * https://www.udacity.com/course/viewer#!/c-ud853/l-1639338560/e-1633698599/m-1633698600
          **/
 
-        final String SQL_CREATE_LOCATION_TABLE = "CREATE TABLE " ;
+        final String SQL_CREATE_LOCATION_TABLE = "CREATE TABLE " + LocationEntry.TABLE_NAME + " (" +
+                LocationEntry._ID + " INTEGER PRIMARY KEY, " +
+                LocationEntry.COLUMN_CITY_NAME + " TEXT UNIQUE NOT NULL," +
+                LocationEntry.COLUMN_LOCATION_SETTING + " TEXT NOT NULL," +
+                LocationEntry.COLUMN_COORD_LAT + " REAL NOT NULL," +
+                LocationEntry.COLUMN_COORD_LONG + " REAL NOT NULL" +
+                "UNIQUE (" + LocationEntry.COLUMN_LOCATION_SETTING + ") ON CONFLICT IGNORE" +
+                ");";
 
         final String SQL_CREATE_WEATHER_TABLE = "CREATE TABLE " + WeatherEntry.TABLE_NAME + " (" +
                 // Why AutoIncrement here, and not above?
