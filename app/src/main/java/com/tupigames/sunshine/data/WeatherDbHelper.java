@@ -20,7 +20,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import com.tupigames.sunshine.data.WeatherContract.LocationEntry;
 import com.tupigames.sunshine.data.WeatherContract.WeatherEntry;
-import com.tupigames.sunshine.data.WeatherContract;
 
 
 /**
