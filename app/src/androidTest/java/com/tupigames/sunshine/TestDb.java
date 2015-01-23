@@ -13,7 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.android.sunshine.app.test;
+package com.tupigames.sunshine;
+
 
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -21,12 +22,13 @@ import android.database.sqlite.SQLiteDatabase;
 import android.test.AndroidTestCase;
 import android.util.Log;
 
-import com.example.android.sunshine.app.data.WeatherContract.LocationEntry;
-import com.example.android.sunshine.app.data.WeatherContract.WeatherEntry;
-import com.example.android.sunshine.app.data.WeatherDbHelper;
+import com.tupigames.sunshine.data.WeatherContract.LocationEntry;
+import com.tupigames.sunshine.data.WeatherContract.WeatherEntry;
+import com.tupigames.sunshine.data.WeatherDbHelper;
 
 import java.util.Map;
 import java.util.Set;
+
 
 public class TestDb extends AndroidTestCase {
 

@@ -20,6 +20,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import com.tupigames.sunshine.data.WeatherContract.LocationEntry;
 import com.tupigames.sunshine.data.WeatherContract.WeatherEntry;
+import com.tupigames.sunshine.data.WeatherContract;
 
 
 /**
@@ -44,7 +45,7 @@ public class WeatherDbHelper extends SQLiteOpenHelper {
          * https://www.udacity.com/course/viewer#!/c-ud853/l-1639338560/e-1633698599/m-1633698600
          **/
 
-        final String SQL_CREATE_LOCATION_TABLE = "";
+        final String SQL_CREATE_LOCATION_TABLE = "CREATE TABLE " ;
 
         final String SQL_CREATE_WEATHER_TABLE = "CREATE TABLE " + WeatherEntry.TABLE_NAME + " (" +
                 // Why AutoIncrement here, and not above?
