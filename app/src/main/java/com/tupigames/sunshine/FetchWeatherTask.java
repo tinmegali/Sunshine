@@ -15,13 +15,18 @@
  */
 package com.tupigames.sunshine;
 
+import android.content.ContentUris;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.ArrayAdapter;
+
+import com.tupigames.sunshine.data.WeatherContract.LocationEntry;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -35,8 +40,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-
 
 public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
 
@@ -72,7 +75,8 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
         // we start storing the values in a database.
         SharedPreferences sharedPrefs =
                 PreferenceManager.getDefaultSharedPreferences(mContext);
-        String unitType = sharedPrefs.getString( SettingsActivity.PREF_KEY_UNITS,
+        String unitType = sharedPrefs.getString(
+                SettingsActivity.PREF_KEY_UNITS,
                 SettingsActivity.PREF_UNIT_METER);
 
         if (unitType.equals(SettingsActivity.PREF_UNIT_IMPERIAL)) {
@@ -88,6 +92,46 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
 
         String highLowStr = roundedHigh + "/" + roundedLow;
         return highLowStr;
+    }
+
+    /**
+     * Helper method to handle insertion of a new location in the weather database.
+     *
+     * @param locationSetting The location string used to request updates from the server.
+     * @param cityName A human-readable city name, e.g "Mountain View"
+     * @param lat the latitude of the city
+     * @param lon the longitude of the city
+     * @return the row ID of the added location.
+     */
+    private long addLocation(String locationSetting, String cityName, double lat, double lon) {
+
+        Log.v(LOG_TAG, "inserting " + cityName + ", with coord: " + lat + ", " + lon);
+
+        // First, check if the location with this city name exists in the db
+        Cursor cursor = mContext.getContentResolver().query(
+                LocationEntry.CONTENT_URI,
+                new String[]{LocationEntry._ID},
+                LocationEntry.COLUMN_LOCATION_SETTING + " = ?",
+                new String[]{locationSetting},
+                null);
+
+        if (cursor.moveToFirst()) {
+            Log.v(LOG_TAG, "Found it in the database!");
+            int locationIdIndex = cursor.getColumnIndex(LocationEntry._ID);
+            return cursor.getLong(locationIdIndex);
+        } else {
+            Log.v(LOG_TAG, "Didn't find it in the database, inserting now!");
+            ContentValues locationValues = new ContentValues();
+            locationValues.put(LocationEntry.COLUMN_LOCATION_SETTING, locationSetting);
+            locationValues.put(LocationEntry.COLUMN_CITY_NAME, cityName);
+            locationValues.put(LocationEntry.COLUMN_COORD_LAT, lat);
+            locationValues.put(LocationEntry.COLUMN_COORD_LONG, lon);
+
+            Uri locationInsertUri = mContext.getContentResolver()
+                    .insert(LocationEntry.CONTENT_URI, locationValues);
+
+            return ContentUris.parseId(locationInsertUri);
+        }
     }
 
     /**
@@ -140,8 +184,7 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
         Log.v(LOG_TAG, cityName + ", with coord: " + cityLatitude + " " + cityLongitude);
 
         // Insert the location into the database.
-        // The function referenced here is not yet implemented, so we've commented it out for now.
-//        long locationID = addLocation(locationSetting, cityName, cityLatitude, cityLongitude);
+        long locationID = addLocation(locationSetting, cityName, cityLatitude, cityLongitude);
 
         String[] resultStrs = new String[numDays];
         for(int i = 0; i < weatherArray.length(); i++) {
@@ -174,6 +217,7 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
         }
         return resultStrs;
     }
+
     @Override
     protected String[] doInBackground(String... params) {
 
@@ -181,6 +225,7 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
         if (params.length == 0) {
             return null;
         }
+        String locationQuery = params[0];
 
         // These two need to be declared outside the try/catch
         // so that they can be closed in the finally block.
@@ -192,7 +237,7 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
 
         String format = "json";
         String units = "metric";
-        int numDays = 7;
+        int numDays = 14;
 
         try {
             // Construct the URL for the OpenWeatherMap query
@@ -260,12 +305,11 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
         }
 
         try {
-            return getWeatherDataFromJson(forecastJsonStr, numDays);
+            return getWeatherDataFromJson(forecastJsonStr, numDays, locationQuery);
         } catch (JSONException e) {
             Log.e(LOG_TAG, e.getMessage(), e);
             e.printStackTrace();
         }
-
         // This will only happen if there was an error getting or parsing the forecast.
         return null;
     }
