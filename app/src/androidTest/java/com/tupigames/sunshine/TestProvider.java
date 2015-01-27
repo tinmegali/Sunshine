@@ -71,10 +71,6 @@ public class TestProvider extends AndroidTestCase {
          deleteAllRecords();
      }
 
-     /* TODO Uncomment for
-     4b - Implement Location_ID queries
-     https://www.udacity.com/course/viewer#!/c-ud853/l-1576308909/e-1675098551/m-1675098552
-
      public void testInsertReadProvider() {
 
          ContentValues testValues = TestDb.createNorthPoleLocationValues();
@@ -163,9 +159,9 @@ public class TestProvider extends AndroidTestCase {
          );
          TestDb.validateCursor(weatherCursor, weatherValues);
      }
-	   */
-    
-    
+
+
+
 
      /* TODO Uncomment for
      4b - Coding the Content Provider : getType()
