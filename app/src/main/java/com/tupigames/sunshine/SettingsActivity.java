@@ -14,6 +14,10 @@ public class SettingsActivity extends PreferenceActivity
 
     public static final String PREF_KEY_LOCALIZATION    = "pref_localization";
     public static final String PREF_KEY_UNITS           = "pref_unit";
+    public static final String PREF_UNIT_METER          = "meter";
+    public static final String PREF_UNIT_IMPERIAL       = "imperial";
+    public static final String PREF_LOCALIZATION_DEFAULT = "29090590";
+
     public static final String PREF_KEY_USEGPS          = "pref_use_gps";
     public static final String PREF_KEY_GPSLOCAL        = "pref_gpslocalization";
     SharedPreferences sharedPreferences;
