@@ -40,6 +40,14 @@
                 android:value="com.tupigames.sunshine.MainActivity" />
 
         </activity>
+
+        <provider
+            android:authorities="com.tupigames.sunshine"
+            android:name=".data.WeatherProvider"
+         />
+
     </application>
+
+
 
 </manifest>

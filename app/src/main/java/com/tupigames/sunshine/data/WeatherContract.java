@@ -18,6 +18,7 @@ package com.tupigames.sunshine.data;
 import android.content.ContentUris;
 import android.net.Uri;
 import android.provider.BaseColumns;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -97,6 +98,11 @@ public class WeatherContract {
         public static final String COLUMN_COORD_LAT        = "latitude";
         public static final String COLUMN_COORD_LONG       = "longitude";
 
+        /**
+         * TODO YOUR CODE BELOW HERE FOR QUIZ
+         * QUIZ - 4b - Adding LocationEntry with ID UriBuilder
+         * https://www.udacity.com/course/viewer#!/c-ud853/l-1576308909/e-1604969848/m-1604969849
+         **/
         public static final Uri CONTENT_URI =
                 BASE_CONTENT_URI.buildUpon().appendPath(PATH_LOCATION).build();
 
@@ -106,20 +112,15 @@ public class WeatherContract {
                 "vnd.android.cursor.item/" + CONTENT_AUTHORITY + "/" + PATH_LOCATION;
 
 
+        public static Uri buildLocationUri(long id) {
+            return ContentUris.withAppendedId(CONTENT_URI, id);
+        }
 
 
 
-        /**
-         * TODO YOUR CODE BELOW HERE FOR QUIZ
-         * QUIZ - 4b - Adding LocationEntry with ID UriBuilder
-         * https://www.udacity.com/course/viewer#!/c-ud853/l-1576308909/e-1604969848/m-1604969849
-         **/
+
 
     }
-
-
-
-
 /*
 /* Inner class that defines the table contents of the weather table */
     public static final class WeatherEntry implements BaseColumns {
