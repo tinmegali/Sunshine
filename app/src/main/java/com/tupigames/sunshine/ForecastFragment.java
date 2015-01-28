@@ -16,8 +16,14 @@
 package com.tupigames.sunshine;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager.LoaderCallbacks;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -28,16 +34,49 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.tupigames.sunshine.data.WeatherContract;
+import com.tupigames.sunshine.data.WeatherContract.LocationEntry;
+import com.tupigames.sunshine.data.WeatherContract.WeatherEntry;
+
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Encapsulates fetching the forecast and displaying it as a {@link ListView} layout.
  */
-public class ForecastFragment extends Fragment {
+public class ForecastFragment extends Fragment
+        implements LoaderCallbacks<Cursor>
+{
 
     private ArrayAdapter<String> mForecastAdapter;
 
+    private static final int FORECAST_LOADER    = 0;
+    private String mLocation;
+
+    private static final String[] FORECAST_COLUMNS = {
+            WeatherEntry.TABLE_NAME,
+            WeatherEntry.COLUMN_DATETEXT,
+            WeatherEntry.COLUMN_SHORT_DESC,
+            WeatherEntry.COLUMN_MAX_TEMP,
+            WeatherEntry.COLUMN_MIN_TEMP,
+            LocationEntry.COLUMN_LOCATION_SETTING
+    };
+
+    public static final int COL_WEATHER_ID          = 0;
+    public static final int COL_WEATHER_DATE        = 1;
+    public static final int COL_WEATHER_DESC        = 2;
+    public static final int COL_WEATHER_MAX_TEMP    = 3;
+    public static final int COL_WEATHER_MIN_TEMP    = 4;
+    public static final int COL_LOCATION_SETTINGS   = 5;
+
     public ForecastFragment() {
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        getLoaderManager().initLoader(FORECAST_LOADER, null, this);
+
+        super.onActivityCreated(savedInstanceState);
     }
 
     @Override
@@ -106,5 +145,34 @@ public class ForecastFragment extends Fragment {
     public void onStart() {
         super.onStart();
         updateWeather();
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        String startDate    = WeatherContract.getDbDateString( new Date() );
+
+        String sortOrder    = WeatherEntry.COLUMN_DATETEXT + " ASC";
+
+        mLocation   = Utility.getPreferredLocation( getActivity() );
+        Uri weatherFromLocationUri = WeatherEntry.buildWeatherLocationWithDate( mLocation, startDate );
+
+        return new CursorLoader(
+                getActivity(),
+                weatherFromLocationUri,
+                FORECAST_COLUMNS,
+                null,
+                null,
+                sortOrder
+        );
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+
     }
 }

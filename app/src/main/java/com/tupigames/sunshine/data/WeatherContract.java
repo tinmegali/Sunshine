@@ -116,10 +116,6 @@ public class WeatherContract {
             return ContentUris.withAppendedId(CONTENT_URI, id);
         }
 
-
-
-
-
     }
 /*
 /* Inner class that defines the table contents of the weather table */
@@ -130,6 +126,7 @@ public class WeatherContract {
 
         // Column with the foreign key into the location table.
         public static final String COLUMN_LOC_KEY = "location_id";
+
         // Date, stored as Text with format yyyy-MM-dd
         public static final String COLUMN_DATETEXT = "date";
         // Weather id as returned by API, to identify the icon to be used
